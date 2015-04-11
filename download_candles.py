@@ -4,8 +4,14 @@ chaining multiple requests."""
 import datetime
 import time
 import requests
+import json
 
 import click
+
+duration = {
+    "M5": datetime.timedelta(minutes=5),
+    "D": datetime.timedelta(days=1),
+}
 
 @click.command()
 @click.option(
@@ -34,7 +40,7 @@ def download_candles(oanda_token, instrument, granularity):
         "granularity": granularity,
     }
     current = start
-    delta = datetime.timedelta(days=14)
+    delta = 4500 * duration[granularity]
     candles = []
     while current < end:
         params["start"] = current.isoformat()
@@ -43,4 +49,4 @@ def download_candles(oanda_token, instrument, granularity):
         candles.extend(response.json()["candles"])
         time.sleep(0.5)
         current += delta
-    print(candles)
+    print(json.dumps(candles))
