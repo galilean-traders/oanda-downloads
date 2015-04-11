@@ -3,7 +3,7 @@ download data by chaining 5000 candles at a time
 
 ## Download
 
-`git clone git@github.com:Enucatl/oanda-downloads.git`
+`git clone git@github.com:galilean-traders/oanda-downloads.git`
 
 ## Install
 
