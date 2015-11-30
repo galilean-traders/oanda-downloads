@@ -11,52 +11,53 @@ import click
 
 # http://developer.oanda.com/rest-live/rates/#retrieveInstrumentHistory
 granularities = [
-    "S5", # 5 seconds
-    "S10", # 10 seconds
-    "S15", # 15 seconds
-    "S30", # 30 seconds
-    "M1", # 1 minute
-    "M2", # 2 minutes
-    "M3", # 3 minutes
-    "M4", # 4 minutes
-    "M5", # 5 minutes
-    "M10", # 10 minutes
-    "M15", # 15 minutes
-    "M30", # 30 minutes
-    "H1", # 1 hour
-    "H2", # 2 hours
-    "H3", # 3 hours
-    "H4", # 4 hours
-    "H6", # 6 hours
-    "H8", # 8 hours
-    "H12", # 12 hours
-    "D", # 1 Day
-    "W", # 1 Week
+    "S5",  # 5 seconds
+    "S10",  # 10 seconds
+    "S15",  # 15 seconds
+    "S30",  # 30 seconds
+    "M1",  # 1 minute
+    "M2",  # 2 minutes
+    "M3",  # 3 minutes
+    "M4",  # 4 minutes
+    "M5",  # 5 minutes
+    "M10",  # 10 minutes
+    "M15",  # 15 minutes
+    "M30",  # 30 minutes
+    "H1",  # 1 hour
+    "H2",  # 2 hours
+    "H3",  # 3 hours
+    "H4",  # 4 hours
+    "H6",  # 6 hours
+    "H8",  # 8 hours
+    "H12",  # 12 hours
+    "D",  # 1 Day
+    "W",  # 1 Week
 ]
 
 duration = {
-    "S5": datetime.timedelta(seconds=5), # 5 seconds
-    "S10": datetime.timedelta(seconds=10), # 10 seconds
-    "S15": datetime.timedelta(seconds=15), # 15 seconds
-    "S30": datetime.timedelta(seconds=30), # 30 seconds
-    "M1": datetime.timedelta(minutes=1), # 1 minute
-    "M2": datetime.timedelta(minutes=2), # 2 minutes
-    "M3": datetime.timedelta(minutes=3), # 3 minutes
-    "M4": datetime.timedelta(minutes=4), # 4 minutes
-    "M5": datetime.timedelta(minutes=5), # 5 minutes
-    "M10": datetime.timedelta(minutes=10), # 10 minutes
-    "M15": datetime.timedelta(minutes=15), # 15 minutes
-    "M30": datetime.timedelta(minutes=30), # 30 minutes
-    "H1": datetime.timedelta(hours=1), # 1 hour
-    "H2": datetime.timedelta(hours=2), # 2 hours
-    "H3": datetime.timedelta(hours=3), # 3 hours
-    "H4": datetime.timedelta(hours=4), # 4 hours
-    "H6": datetime.timedelta(hours=6), # 6 hours
-    "H8": datetime.timedelta(hours=8), # 8 hours
-    "H12": datetime.timedelta(hours=12), # 12 hours
-    "D": datetime.timedelta(days=1), # 1 Day
-    "W": datetime.timedelta(weeks=1), # 1 Week
+    "S5": datetime.timedelta(seconds=5),
+    "S10": datetime.timedelta(seconds=10),
+    "S15": datetime.timedelta(seconds=15),
+    "S30": datetime.timedelta(seconds=30),
+    "M1": datetime.timedelta(minutes=1),
+    "M2": datetime.timedelta(minutes=2),
+    "M3": datetime.timedelta(minutes=3),
+    "M4": datetime.timedelta(minutes=4),
+    "M5": datetime.timedelta(minutes=5),
+    "M10": datetime.timedelta(minutes=10),
+    "M15": datetime.timedelta(minutes=15),
+    "M30": datetime.timedelta(minutes=30),
+    "H1": datetime.timedelta(hours=1),
+    "H2": datetime.timedelta(hours=2),
+    "H3": datetime.timedelta(hours=3),
+    "H4": datetime.timedelta(hours=4),
+    "H6": datetime.timedelta(hours=6),
+    "H8": datetime.timedelta(hours=8),
+    "H12": datetime.timedelta(hours=12),
+    "D": datetime.timedelta(days=1),
+    "W": datetime.timedelta(weeks=1),
 }
+
 
 @click.command()
 @click.option(
@@ -93,9 +94,12 @@ def download_candles(oanda_token, instrument, granularity, begin, end):
         params["start"] = current.isoformat()
         params["end"] = (current + delta).isoformat()
         response = requests.get(url, params=params, headers=headers)
-        candle = response.json()["candles"]
-        print(candle[0]["time"], file=sys.stderr)
-        candles.extend(candle)
-        time.sleep(0.5)
-        current += delta
+        try:
+            candle = response.json()["candles"]
+            print(candle[0]["time"], file=sys.stderr)
+            candles.extend(candle)
+            time.sleep(0.5)
+            current += delta
+        except KeyError:
+            print(response.json(), file=sys.stderr)
     print(json.dumps(candles))
