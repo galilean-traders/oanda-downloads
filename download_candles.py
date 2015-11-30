@@ -10,9 +10,36 @@ import sys
 import click
 
 duration = {
+    "M1": datetime.timedelta(minutes=1),
     "M5": datetime.timedelta(minutes=5),
     "D": datetime.timedelta(days=1),
 }
+
+# http://developer.oanda.com/rest-live/rates/#retrieveInstrumentHistory
+granularities = [
+    "S5", # 5 seconds
+    "S10", # 10 seconds
+    "S15", # 15 seconds
+    "S30", # 30 seconds
+    "M1", # 1 minute
+    "M2", # 2 minutes
+    "M3", # 3 minutes
+    "M4", # 4 minutes
+    "M5", # 5 minutes
+    "M10", # 10 minutes
+    "M15", # 15 minutes
+    "M30", # 30 minutes
+    "H1", # 1 hour
+    "H2", # 2 hours
+    "H3", # 3 hours
+    "H4", # 4 hours
+    "H6", # 6 hours
+    "H8", # 8 hours
+    "H12", # 12 hours
+    "D", # 1 Day
+    "W", # 1 Week
+    "M", # 1 Month
+]
 
 @click.command()
 @click.option(
@@ -22,7 +49,7 @@ duration = {
 )
 @click.option("--instrument", default="EUR_USD",
               help="request candles for this instrument")
-@click.option("--granularity", type=click.Choice(["M5", "D"]), default="M5")
+@click.option("--granularity", type=click.Choice(granularities), default="M5")
 @click.option("--begin", type=int, default=2013)
 @click.option("--end", type=int, default=2015)
 def download_candles(oanda_token, instrument, granularity, begin, end):
