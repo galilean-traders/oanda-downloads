@@ -102,4 +102,5 @@ def download_candles(oanda_token, instrument, granularity, begin, end):
             current += delta
         except KeyError:
             print(response.json(), file=sys.stderr)
+            break
     print(json.dumps(candles))
