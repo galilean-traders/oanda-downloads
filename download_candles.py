@@ -9,12 +9,6 @@ import sys
 
 import click
 
-duration = {
-    "M1": datetime.timedelta(minutes=1),
-    "M5": datetime.timedelta(minutes=5),
-    "D": datetime.timedelta(days=1),
-}
-
 # http://developer.oanda.com/rest-live/rates/#retrieveInstrumentHistory
 granularities = [
     "S5", # 5 seconds
@@ -38,8 +32,31 @@ granularities = [
     "H12", # 12 hours
     "D", # 1 Day
     "W", # 1 Week
-    "M", # 1 Month
 ]
+
+duration = {
+    "S5": datetime.timedelta(seconds=5), # 5 seconds
+    "S10": datetime.timedelta(seconds=10), # 10 seconds
+    "S15": datetime.timedelta(seconds=15), # 15 seconds
+    "S30": datetime.timedelta(seconds=30), # 30 seconds
+    "M1": datetime.timedelta(minutes=1), # 1 minute
+    "M2": datetime.timedelta(minutes=2), # 2 minutes
+    "M3": datetime.timedelta(minutes=3), # 3 minutes
+    "M4": datetime.timedelta(minutes=4), # 4 minutes
+    "M5": datetime.timedelta(minutes=5), # 5 minutes
+    "M10": datetime.timedelta(minutes=10), # 10 minutes
+    "M15": datetime.timedelta(minutes=15), # 15 minutes
+    "M30": datetime.timedelta(minutes=30), # 30 minutes
+    "H1": datetime.timedelta(hours=1), # 1 hour
+    "H2": datetime.timedelta(hours=2), # 2 hours
+    "H3": datetime.timedelta(hours=3), # 3 hours
+    "H4": datetime.timedelta(hours=4), # 4 hours
+    "H6": datetime.timedelta(hours=6), # 6 hours
+    "H8": datetime.timedelta(hours=8), # 8 hours
+    "H12": datetime.timedelta(hours=12), # 12 hours
+    "D": datetime.timedelta(days=1), # 1 Day
+    "W": datetime.timedelta(weeks=1), # 1 Week
+}
 
 @click.command()
 @click.option(
